@@ -12,17 +12,15 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	unsigned char	uc;
 	const char		*last;
 
-	uc = (unsigned char)c;
 	while (*s)
 	{
-		if ((unsigned char)*s == uc)
+		if (*s == (char)c)
 			last = s;
 		s++;
 	}
-	if (uc == '\0')
+	if (c == '\0')
 		return ((char *)s);
 	return ((char *)last);
 }
