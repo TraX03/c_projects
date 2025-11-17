@@ -15,9 +15,11 @@
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*result;
-	int		total;
+	size_t	total;
 
-	if (nmemb < 0 && SIZE_MAX / nmemb < size)
+	if ((long)nmemb < 0 && (long)size < 0)
+		return (NULL);
+	if (nmemb != 0 && size > SIZE_MAX / nmemb)
 		return (NULL);
 	total = nmemb * size;
 	result = malloc(total);

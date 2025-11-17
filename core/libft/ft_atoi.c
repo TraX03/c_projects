@@ -21,10 +21,10 @@ int	ft_atoi(const char *nptr)
 	result = 0;
 	while (*nptr == ' ' || (*nptr >= 9 && *nptr <= 13))
 		nptr++;
-	while (*nptr == '+' || *nptr == '-')
+	if (*nptr == '+' || *nptr == '-')
 	{
 		if (*nptr == '-')
-			sign = -sign;
+			sign = -1;
 		nptr++;
 	}
 	while (ft_isdigit(*nptr))

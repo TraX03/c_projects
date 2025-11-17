@@ -19,7 +19,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*result;
 
 	total = ft_strlen(s1) + ft_strlen(s2);
-	result = malloc(sizeof(char *) * (total + 1));
+	result = (char *)malloc(sizeof(char) * (total + 1));
 	if (!result)
 		return (NULL);
 	i = 0;

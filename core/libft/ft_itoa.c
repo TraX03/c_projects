@@ -16,7 +16,7 @@ static int	num_len(int n)
 {
 	int	len;
 
-	len = (n < 0);
+	len = (n <= 0);
 	while (n)
 	{
 		len++;
