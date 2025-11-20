@@ -17,8 +17,6 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	void	*result;
 	size_t	total;
 
-	if ((long)nmemb < 0 && (long)size < 0)
-		return (NULL);
 	if (nmemb != 0 && size > SIZE_MAX / nmemb)
 		return (NULL);
 	total = nmemb * size;
