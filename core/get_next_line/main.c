@@ -17,7 +17,7 @@
 int	main(int argc, char **argv)
 {
 	int		fd;
-	int		count;
+	int		loop;
 	char	*line;
 
 	if (argc == 1)
@@ -32,10 +32,12 @@ int	main(int argc, char **argv)
 			printf("Cannot read file.\n");
 			return (0);
 		}
-		count = 23;
-		while (count--)
+		loop = 1;
+		while (loop)
 		{
-			line =  get_next_line(fd);
+			line = get_next_line(fd);
+			if (!line)
+				loop = 0;
 			printf("%s", line);
 		}
 		close(fd);

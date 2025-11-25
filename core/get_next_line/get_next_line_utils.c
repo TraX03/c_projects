@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 size_t	ft_strlen(const char *str)
 {
@@ -22,12 +23,12 @@ size_t	ft_strlen(const char *str)
 	return (count);
 }
 
-char	*ft_strchr_nl(const char *s)
+char	*ft_strchr(const char *s, int c)
 {
-	while (*s)
+	while (s && *s)
 	{
-		if (*s == '\n')
-			return ((char *)++s);
+		if (*s == (char)c)
+			return ((char *)s);
 		s++;
 	}
 	return (NULL);
@@ -72,28 +73,31 @@ char	*ft_strdup(const char *s)
 	return (result);
 }
 
-char	*extract_line(char *s)
+char	*split_line(char *stash, char **new_stash)
 {
-	int		count;
+	int		i;
+	int		j;
 	char	*line;
-	char	*temp;
 
-	count = 0;
-	while (s[count])
-	{
-		count++;
-		if (s[count] == '\n')
-		{
-			count++;
-			break ;
-		}
-	}
-	line = malloc(sizeof(char) * count + 1);
+	if (!stash || !stash[0])
+		return (NULL);
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * (i + 1 + (stash[i] == '\n')));
 	if (!line)
 		return (NULL);
-	line[count + 1] = '\0';
-	temp = line;
-	while (count--)
-		*temp++ = *s++;
-	return (line);
+	j = 0;
+	while (stash[j] && stash[j] != '\n')
+	{
+		line[j] = stash[j];
+		j++;
+	}
+	if (stash[j] == '\n')
+		line[j++] = '\n';
+	line[j] = '\0';
+	if (!stash[j])
+		return (free(stash), *new_stash = NULL, line);
+	*new_stash = ft_strdup(stash + j);
+	return (free(stash), line);
 }

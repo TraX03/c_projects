@@ -15,31 +15,28 @@
 
 char	*get_next_line(int fd)
 {
-	int			sz;
-	int			again;	
-	char		*line;
 	static char	*stash;
+	char		*buf;
+	char		*line;
+	int			sz;
 
-	line = malloc(sizeof(char) * BUFFER_SIZE);
-	if (!line)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!stash)
-		stash = ft_strdup(line);
-	again = 1;
-	while (again)
+		stash = ft_strdup("");
+	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
+	sz = 1;
+	while (!ft_strchr(stash, '\n') && sz > 0)
 	{
-		again = 0;
-		sz = read(fd, line, BUFFER_SIZE);
-		if (sz > 0)
-		{
-			stash = ft_strjoin(stash, line);
-			if (!ft_strchr_nl(stash))
-				again = 1;
-		}
+		sz = read(fd, buf, BUFFER_SIZE);
+		if (sz < 0)
+			return (free(buf), NULL);
+		buf[sz] = '\0';
+		stash = ft_strjoin(stash, buf);
 	}
-	line = extract_line(stash);
-	stash = ft_strchr_nl(stash);
-	if (line)
-		return (line);
-	return (NULL);
+	free(buf);
+	line = split_line(stash, &stash);
+	return (line);
 }
