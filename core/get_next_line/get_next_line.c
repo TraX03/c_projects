@@ -11,20 +11,19 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
 	char		*buf;
-	char		*line;
+	char		*tmp;
 	int			sz;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!stash)
 		stash = ft_strdup("");
-	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buf = malloc(BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
 	sz = 1;
@@ -34,9 +33,41 @@ char	*get_next_line(int fd)
 		if (sz < 0)
 			return (free(buf), NULL);
 		buf[sz] = '\0';
-		stash = ft_strjoin(stash, buf);
+		tmp = ft_strjoin(stash, buf);
+		free(stash);
+		stash = tmp;
 	}
 	free(buf);
-	line = split_line(stash, &stash);
-	return (line);
+	return (split_line(stash, &stash));
 }
+
+/*
+#include <fcntl.h>
+#include <stdio.h>
+
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+
+	if (argc == 1)
+		printf("File name missing.\n");
+	else if (argc > 2)
+		printf("Too many arguments.\n");
+	else
+	{
+		fd = open(argv[1], O_RDONLY);
+		if (fd == -1)
+			return (printf("Cannot read file.\n"), 0);
+		while (1)
+		{
+			line = get_next_line(fd);
+			if (!line)
+				break ;
+			printf("%s", line);
+			free(line);
+		}
+		close(fd);
+	}
+}
+*/

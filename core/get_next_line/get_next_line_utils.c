@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 size_t	ft_strlen(const char *str)
 {
@@ -25,12 +24,16 @@ size_t	ft_strlen(const char *str)
 
 char	*ft_strchr(const char *s, int c)
 {
-	while (s && *s)
+	if (!s)
+		return (NULL);
+	while (*s)
 	{
 		if (*s == (char)c)
 			return ((char *)s);
 		s++;
 	}
+	if ((char)c == '\0')
+		return ((char *)s);
 	return (NULL);
 }
 
@@ -41,7 +44,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*result;
 
 	total = ft_strlen(s1) + ft_strlen(s2);
-	result = (char *)malloc(sizeof(char) * (total + 1));
+	result = malloc(total + 1);
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -55,12 +58,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 char	*ft_strdup(const char *s)
 {
-	size_t			len;
 	size_t			i;
 	char			*result;
 
-	len = ft_strlen(s);
-	result = (char *)malloc(sizeof(char) * len + 1);
+	result = malloc(ft_strlen(s) + 1);
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -84,7 +85,7 @@ char	*split_line(char *stash, char **new_stash)
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	line = (char *)malloc(sizeof(char) * (i + 1 + (stash[i] == '\n')));
+	line = malloc(i + 1 + (stash[i] == '\n'));
 	if (!line)
 		return (NULL);
 	j = 0;

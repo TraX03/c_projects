@@ -17,7 +17,6 @@
 int	main(int argc, char **argv)
 {
 	int		fd;
-	int		loop;
 	char	*line;
 
 	if (argc == 1)
@@ -28,17 +27,14 @@ int	main(int argc, char **argv)
 	{
 		fd = open(argv[1], O_RDONLY);
 		if (fd == -1)
-		{
-			printf("Cannot read file.\n");
-			return (0);
-		}
-		loop = 1;
-		while (loop)
+			return (printf("Cannot read file.\n"), 0);
+		while (1)
 		{
 			line = get_next_line(fd);
 			if (!line)
-				loop = 0;
+				break ;
 			printf("%s", line);
+			free(line);
 		}
 		close(fd);
 	}
